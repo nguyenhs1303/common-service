@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="create-table-document_files-25092023" author="nguyen_hs">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="document_files"/>
+            </not>
+        </preConditions>
+        <createTable tableName="document_files">
+            <column name="id" type="BIGINT" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="TEXT"/>
+            <column name="url" type="TEXT"/>
+            <column name="file_service_id" type="BIGINT"/>
+            <column name="file_aws_id" type="BIGINT"/>
+            <column name="document_id" type="BIGINT"/>
+            <column name="size" type="BIGINT"/>
+            <column name="file_type" type="VARCHAR(255)"/>
+            <column name="created_at" type="TIMESTAMP"/>
+            <column name="updated_at" type="TIMESTAMP"/>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

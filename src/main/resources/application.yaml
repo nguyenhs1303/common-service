@@ -1,0 +1,133 @@
+spring:
+  application:
+    name: common-service
+  profiles:
+    default: local
+    active: local
+  jpa:
+    hibernate-dialect: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    show-sql: false
+    hibernate:
+      dialect:
+      ddl-auto: none
+  datasource-read-data:
+    jdbc-url: jdbc:postgresql://localhost:5432/common
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 50000
+      pool-name: HanaReadHikariPool
+  datasource-write-data:
+    jdbc-url: jdbc:postgresql://localhost:5432/common
+    username: postgres
+    password: admin
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 50000
+      pool-name: HanaWriteHikariPool
+    liquibase:
+      drop-first: false
+      enabled: true
+      change-log: classpath:/liquibase/changelog-master.xml
+server:
+  port: 8080
+
+  error:
+    include-message: always
+
+
+springdoc:
+  paths-to-exclude: /swagger-resources/**
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger
+    use-root-path: false
+    disable-swagger-default-url: true
+    display-request-duration: true
+    syntax-highlight:
+      theme: monokai
+management:
+  server:
+    port: 8081
+  endpoints:
+    web:
+      exposure:
+        include: health,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  health:
+    livenessstate:
+      enabled: on
+    readinessstate:
+      enabled: on
+sentry:
+  traces-sample-rate: 1.0
+  environment: local
+---
+# ============================================================
+# DEV
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource-read-data:
+    jdbc-url: #provide at runtime
+    username: #provide at runtime
+    password: #provide at runtime
+  datasource-write-data:
+    jdbc-url: #provide at runtime
+    username: #provide at runtime
+    password: #provide at runtime
+sentry:
+  dsn: #provide at runtime
+---
+# ============================================================
+# UAT
+spring:
+  config:
+    activate:
+      on-profile: uat
+
+  datasource-read-data:
+    jdbc-url: #provide at runtime
+    username: #provide at runtime
+    password: #provide at runtime
+  datasource-write-data:
+    jdbc-url: #provide at runtime
+    username: #provide at runtime
+    password: #provide at runtime
+sentry:
+  environment: uat
+  dsn: #provide at runtime
+---
+# ============================================================
+# PRODUCTION
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+  datasource-read-data:
+    jdbc-url: #provide at runtime
+    username: #provide at runtime
+    password: #provide at runtime
+  datasource-write-data:
+    jdbc-url: #provide at runtime
+    username: #provide at runtime
+    password: #provide at runtime
+sentry:
+  environment: production
+  dsn: #provide at runtime
+
+
+
+
+
