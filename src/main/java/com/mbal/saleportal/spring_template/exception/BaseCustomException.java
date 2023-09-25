@@ -22,4 +22,8 @@ public abstract class BaseCustomException extends RuntimeException{
         this.message = message;
         this.errorCode = errorCode;
     }
+
+    public BaseCustomException(String message) {
+        this.message = message;
+    }
 }

@@ -11,6 +11,7 @@ import com.mbal.saleportal.spring_template.dto.document.response.DocumentRespons
 import com.mbal.saleportal.spring_template.dto.document.response.NameDocumentResponse;
 import com.mbal.saleportal.spring_template.dto.document.response.SubTypeDocumentResponse;
 import com.mbal.saleportal.spring_template.dto.document.response.SummaryDocument;
+import com.mbal.saleportal.spring_template.entity.DocumentCategory;
 import com.mbal.saleportal.spring_template.service.document.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +27,6 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("api/v2/documents")
-@Validated
 public class DocumentController {
 
     @Autowired
@@ -58,7 +58,7 @@ public class DocumentController {
     }
 
     @GetMapping("categories")
-    public ApiBaseResponse<PageBaseDto<SubTypeDocumentResponse>> getCategories(@RequestBody @Valid CategoryFilter filter){
+    public ApiBaseResponse<PageBaseDto<DocumentCategory>> getCategories(@RequestBody @Valid CategoryFilter filter){
         return documentService.getCategories(filter);
     }
 

@@ -12,6 +12,8 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 import java.time.LocalDate;
 
@@ -39,15 +41,19 @@ public class Document extends BaseEntity{
     @Column(name = "upload_status")
     private Boolean uploadStatus;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type")
     private DocumentType type;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "channel")
     private SalePortalChannel channel;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "users_type")
     private DocumentUserType userType;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "notification_status")
     private NotificationDocumentStatus notificationStatus;
 

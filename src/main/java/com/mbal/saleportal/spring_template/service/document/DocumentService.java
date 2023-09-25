@@ -11,13 +11,14 @@ import com.mbal.saleportal.spring_template.dto.document.response.DocumentRespons
 import com.mbal.saleportal.spring_template.dto.document.response.NameDocumentResponse;
 import com.mbal.saleportal.spring_template.dto.document.response.SubTypeDocumentResponse;
 import com.mbal.saleportal.spring_template.dto.document.response.SummaryDocument;
+import com.mbal.saleportal.spring_template.entity.DocumentCategory;
 
 public interface DocumentService {
     ApiBaseResponse<DocumentResponse> getDocuments(FilterDocumentRequest request);
 
     ApiBaseResponse<PageBaseDto<NameDocumentResponse>> NameDocumentResponse(FilterNameDocumentRequest filter);
 
-    ApiBaseResponse<PageBaseDto<SubTypeDocumentResponse>> getCategories(CategoryFilter filter);
+    ApiBaseResponse<PageBaseDto<DocumentCategory>> getCategories(CategoryFilter filter);
 
     ApiBaseResponse<?> getDetailDocument(Long id);
 

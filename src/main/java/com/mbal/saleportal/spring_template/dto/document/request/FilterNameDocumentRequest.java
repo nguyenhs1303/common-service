@@ -5,9 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
 public class FilterNameDocumentRequest {
 
     private String keyword;
+    private PageRequest pageRequest;
+
+    public FilterNameDocumentRequest() {
+        this.pageRequest = new PageRequest(0,10);
+    }
+
+
 }

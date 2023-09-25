@@ -10,6 +10,8 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 @Getter
@@ -17,7 +19,7 @@ import javax.persistence.Table;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "document_category")
+@Table(name = "document_categories")
 @Entity
 public class DocumentCategory extends BaseEntity{
 
@@ -27,6 +29,7 @@ public class DocumentCategory extends BaseEntity{
     @Column(name = "status")
     private Boolean status;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "document_type")
     private DocumentType documentType;
 

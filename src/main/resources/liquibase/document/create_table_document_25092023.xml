@@ -16,14 +16,26 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="document_name_id" type="BIGINT"/>
-            <column name="name" type="VARCHAR(255)"/>
+            <column name="name" type="VARCHAR(255)" >
+                <constraints nullable="false"/>
+            </column>
             <column name="effective_date" type="DATE"/>
             <column name="expiration_date" type="DATE"/>
-            <column name="status" type="BOOLEAN" defaultValue="true"/>
-            <column name="type" type="BIGINT"/>
-            <column name="channel" type="VARCHAR(255)"/>
-            <column name="users_type" type="VARCHAR(255)"/>
-            <column name="notification_status" type="VARCHAR(255)"/>
+            <column name="upload_status" type="BOOLEAN" defaultValue="true">
+                <constraints nullable="false"/>
+            </column>
+            <column name="type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="channel" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="users_type" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="notification_status" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_at" type="TIMESTAMP"/>
             <column name="updated_at" type="TIMESTAMP"/>
 

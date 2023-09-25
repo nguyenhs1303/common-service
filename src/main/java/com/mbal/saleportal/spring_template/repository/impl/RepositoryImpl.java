@@ -20,10 +20,6 @@ public class RepositoryImpl<T, ID> implements JpaRepository<T, ID> {
         this.primaryRepository = primaryRepository;
     }
 
-    public RepositoryImpl(JpaRepository secondaryRepository) {
-        this.secondaryRepository = secondaryRepository;
-    }
-
     // Replication (Read)
     @Override
     public Optional<T> findById(ID id) {

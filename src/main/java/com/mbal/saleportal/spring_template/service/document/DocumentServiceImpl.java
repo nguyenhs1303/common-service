@@ -17,6 +17,7 @@ import com.mbal.saleportal.spring_template.entity.DocumentCategory;
 import com.mbal.saleportal.spring_template.entity.DocumentFile;
 import com.mbal.saleportal.spring_template.entity.DocumentName;
 import com.mbal.saleportal.spring_template.enums.document.DocumentResponseMessage;
+import com.mbal.saleportal.spring_template.enums.document.DocumentType;
 import com.mbal.saleportal.spring_template.exception.BadRequestException;
 import com.mbal.saleportal.spring_template.repository.impl.document.DocumentCategoryRepositoryImpl;
 import com.mbal.saleportal.spring_template.repository.impl.document.DocumentFileRepositoryImpl;
@@ -59,14 +60,29 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public ApiBaseResponse<PageBaseDto<NameDocumentResponse>> NameDocumentResponse(FilterNameDocumentRequest filter) {
-        return null;
+        Pageable pageable = PageRequest.of(filter.getPageRequest().getPage(), filter.getPageRequest().getSize());
+        Page<NameDocumentResponse> nameDocumentResponses = documentNameRepository.filter(filter, pageable);
     }
 
     @Override
-    public ApiBaseResponse<PageBaseDto<SubTypeDocumentResponse>> getCategories(CategoryFilter filter) {
-        Pageable pageable = PageRequest.of(filter.getPage().getPage(), filter.getPage().getSize());
-        Page<DocumentCategory> categoryPage = documentCategoryRepository.filter(filter, pageable);
-        return null;
+    public ApiBaseResponse<PageBaseDto<DocumentCategory>> getCategories(CategoryFilter filter) {
+        Pageable pageable = PageRequest.of(filter.getPageRequest().getPage(), filter.getPageRequest().getSize());
+        if (!DocumentType.checkDocumentType(filter.getType())){
+            throw new BadRequestException("Vui lòng chọn `FORM` hoặc `NOTIFICATION` cho type");
+        }
+        Page<DocumentCategory> categoryPage = documentCategoryRepository.filter(List.of(DocumentType.ALL, DocumentType.valueOf(filter.getType())), pageable);
+        PageBaseDto<DocumentCategory> pageBaseDto = PageBaseDto.<DocumentCategory>builder()
+                .page(filter.getPageRequest().getPage())
+                .size(filter.getPageRequest().getSize())
+                .totalPages(categoryPage.getTotalPages())
+                .totalElements(categoryPage.getTotalElements())
+                .content(categoryPage.getContent())
+                .build();
+        return ApiBaseResponse.<PageBaseDto<DocumentCategory>>builder()
+                .statusCode(String.valueOf(HttpStatus.OK.value()))
+                .message(HttpStatus.OK.name())
+                .data(pageBaseDto)
+                .build();
     }
 
     @Override

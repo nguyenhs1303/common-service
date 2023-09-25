@@ -1,5 +1,6 @@
 package com.mbal.saleportal.spring_template.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,8 +23,10 @@ public abstract class BaseEntity {
     private Long id;
 
     @Column(name = "created_at")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm:ss")
     private LocalDateTime createdAt;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/MM/dd HH:mm:ss")
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 

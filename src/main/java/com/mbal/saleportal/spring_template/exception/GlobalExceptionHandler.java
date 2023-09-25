@@ -1,20 +1,24 @@
 package com.mbal.saleportal.spring_template.exception;
 
 import com.mbal.saleportal.spring_template.dto.ApiBaseResponseError;
+import liquibase.pro.license.keymgr.e;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
@@ -30,11 +34,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadRequestException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiBaseResponseError handleCustomException(BadRequestException ex) {
+    public ApiBaseResponseError handleBadRequestException(BadRequestException ex) {
         log.error(getExceptionExplain(ex));
         return ApiBaseResponseError.builder()
                 .messages(ex.getMessage())
-                .errorCode(ex.getErrorCode())
+                .errorCode(String.valueOf(HttpStatus.BAD_REQUEST.value()))
                 .build();
     }
 
