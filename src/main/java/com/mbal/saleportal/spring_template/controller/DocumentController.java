@@ -2,6 +2,7 @@ package com.mbal.saleportal.spring_template.controller;
 
 import com.mbal.saleportal.spring_template.dto.ApiBaseResponse;
 import com.mbal.saleportal.spring_template.dto.PageBaseDto;
+import com.mbal.saleportal.spring_template.dto.document.request.CategoryFilter;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentRequest;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentUpdateRequest;
 import com.mbal.saleportal.spring_template.dto.document.request.FilterDocumentRequest;
@@ -56,9 +57,9 @@ public class DocumentController {
         return documentService.NameDocumentResponse(filter);
     }
 
-    @GetMapping("sub-types")
-    public ApiBaseResponse<PageBaseDto<SubTypeDocumentResponse>> getSubTypes(){
-        return documentService.getSubDocumentType();
+    @GetMapping("categories")
+    public ApiBaseResponse<PageBaseDto<SubTypeDocumentResponse>> getCategories(@RequestBody @Valid CategoryFilter filter){
+        return documentService.getCategories(filter);
     }
 
     @GetMapping("summary")

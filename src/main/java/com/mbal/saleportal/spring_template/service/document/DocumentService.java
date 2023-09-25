@@ -2,6 +2,7 @@ package com.mbal.saleportal.spring_template.service.document;
 
 import com.mbal.saleportal.spring_template.dto.ApiBaseResponse;
 import com.mbal.saleportal.spring_template.dto.PageBaseDto;
+import com.mbal.saleportal.spring_template.dto.document.request.CategoryFilter;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentRequest;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentUpdateRequest;
 import com.mbal.saleportal.spring_template.dto.document.request.FilterDocumentRequest;
@@ -16,7 +17,7 @@ public interface DocumentService {
 
     ApiBaseResponse<PageBaseDto<NameDocumentResponse>> NameDocumentResponse(FilterNameDocumentRequest filter);
 
-    ApiBaseResponse<PageBaseDto<SubTypeDocumentResponse>> getSubDocumentType();
+    ApiBaseResponse<PageBaseDto<SubTypeDocumentResponse>> getCategories(CategoryFilter filter);
 
     ApiBaseResponse<?> getDetailDocument(Long id);
 

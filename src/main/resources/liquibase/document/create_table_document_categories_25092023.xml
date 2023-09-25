@@ -5,19 +5,20 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="create-table-document_sub_types-25092023" author="nguyen_hs">
+    <changeSet id="create-table-document_categories-25092023" author="nguyen_hs">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="document_sub_types" />
+                <tableExists tableName="document_categories" />
             </not>
         </preConditions>
-        <createTable tableName="document_sub_types">
+        <createTable tableName="document_categories">
             <column name="id" type="BIGINT" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(255)"/>
             <column name="status" type="BOOLEAN" defaultValue="true"/>
-            <column name="created_at" type="TIMESTAMP"/>
+            <column name="document_type" type="VARCHAR(50)"/>
+            <column name="created_at" type="TIMESTAMP" />
             <column name="updated_at" type="TIMESTAMP" />
 
         </createTable>

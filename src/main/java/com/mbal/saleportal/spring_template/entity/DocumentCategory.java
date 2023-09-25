@@ -1,6 +1,7 @@
 package com.mbal.saleportal.spring_template.entity;
 
 
+import com.mbal.saleportal.spring_template.enums.document.DocumentType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,14 +17,19 @@ import javax.persistence.Table;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "document_sub_types")
+@Table(name = "document_category")
 @Entity
-public class DocumentSubType extends BaseEntity{
+public class DocumentCategory extends BaseEntity{
 
     @Column(name = "name")
     private String name;
 
     @Column(name = "status")
     private Boolean status;
+
+    @Column(name = "document_type")
+    private DocumentType documentType;
+
+
 
 }

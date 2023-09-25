@@ -19,7 +19,6 @@ import java.util.List;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiBaseResponseError handleException(Exception ex) {
         log.error(getExceptionExplain(ex));
@@ -30,7 +29,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(BadRequestException.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiBaseResponseError handleCustomException(BadRequestException ex) {
         log.error(getExceptionExplain(ex));
@@ -41,7 +39,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(InternalErrorException.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiBaseResponseError handleCustomException(InternalErrorException ex) {
         log.error(getExceptionExplain(ex));
@@ -52,7 +49,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    @ResponseBody
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiBaseResponseError handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         log.error(getExceptionExplain(ex));

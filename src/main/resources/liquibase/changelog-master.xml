@@ -4,7 +4,9 @@
                         https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
     <include file="liquibase/document/create_table_document_25092023.xml"/>
-    <include file="liquibase/document/create_table_document_sub_type_25092023.xml"/>
+    <include file="/liquibase/document/create_table_document_categories_25092023.xml"/>
     <include file="/liquibase/document/create_table_document_files_25092023.xml"/>
     <include file="/liquibase/document/create_table_document_names_25092023.xml"/>
+    <include file="/liquibase/document/insert_into_document_category_25092023.sql"/>
+    <include file="/liquibase/document/insert_into_document_names_25092023.sql"/>
 </databaseChangeLog>

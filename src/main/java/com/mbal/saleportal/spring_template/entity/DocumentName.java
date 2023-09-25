@@ -22,8 +22,12 @@ public class DocumentName extends BaseEntity{
 
     @Column(name = "order")
     private Integer order;
+
     @Column(name = "name")
     private String name;
+
+    @Column(name = "document_category_id")
+    private Long documentCategoryId;
 
     public DocumentName(String name) {
         this.name = name;

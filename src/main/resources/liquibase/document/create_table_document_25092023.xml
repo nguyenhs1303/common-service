@@ -21,7 +21,6 @@
             <column name="expiration_date" type="DATE"/>
             <column name="status" type="BOOLEAN" defaultValue="true"/>
             <column name="type" type="BIGINT"/>
-            <column name="document_sub_type_id" type="BIGINT"/>
             <column name="channel" type="VARCHAR(255)"/>
             <column name="users_type" type="VARCHAR(255)"/>
             <column name="notification_status" type="VARCHAR(255)"/>

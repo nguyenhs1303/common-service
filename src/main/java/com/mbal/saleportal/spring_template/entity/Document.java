@@ -36,14 +36,11 @@ public class Document extends BaseEntity{
     @Column(name = "expiration_date")
     private LocalDate expirationDate;
 
-    @Column(name = "status")
-    private Boolean status;
+    @Column(name = "upload_status")
+    private Boolean uploadStatus;
 
     @Column(name = "type")
     private DocumentType type;
-
-    @Column(name = "document_sub_type_id")
-    private Long documentSubTypeId;
 
     @Column(name = "channel")
     private SalePortalChannel channel;
