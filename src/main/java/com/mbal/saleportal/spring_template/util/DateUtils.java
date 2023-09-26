@@ -1,9 +1,12 @@
 package com.mbal.saleportal.spring_template.util;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class DateUtils {
@@ -15,6 +18,24 @@ public class DateUtils {
         try {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
             return LocalDate.parse(inputDate, dateTimeFormatter);
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    public static Timestamp stringToStartLocalDateTime(String inputDate, String pattern) {
+        try {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+            return Timestamp.valueOf(LocalDate.parse(inputDate, dateTimeFormatter).atStartOfDay());
+        }catch (Exception e){
+            return null;
+        }
+    }
+
+    public static Timestamp stringToEndLocalDateTime(String inputDate, String pattern) {
+        try {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+            return Timestamp.valueOf(LocalDate.parse(inputDate, dateTimeFormatter).atTime(LocalTime.MAX));
         }catch (Exception e){
             return null;
         }

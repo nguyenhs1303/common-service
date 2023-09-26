@@ -2,12 +2,11 @@ package com.mbal.saleportal.spring_template.controller;
 
 import com.mbal.saleportal.spring_template.dto.ApiBaseResponse;
 import com.mbal.saleportal.spring_template.dto.PageBaseDto;
-import com.mbal.saleportal.spring_template.dto.document.request.DocumentCategoryFilter;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentRequest;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentUpdateRequest;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentFilterRequest;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentNameFilterRequest;
-import com.mbal.saleportal.spring_template.dto.document.response.SummaryDocument;
+import com.mbal.saleportal.spring_template.dto.document.response.DocumentSummaryResponse;
 import com.mbal.saleportal.spring_template.entity.Document;
 import com.mbal.saleportal.spring_template.entity.DocumentName;
 import com.mbal.saleportal.spring_template.service.document.DocumentService;
@@ -35,27 +34,32 @@ public class DocumentController {
     }
 
     @PostMapping
-    public ApiBaseResponse<?> createDocument(@RequestBody @Valid DocumentRequest request){
+    public ApiBaseResponse<?> createDocument(@RequestBody @Valid DocumentRequest request) {
         return documentService.createDocument(request);
     }
 
+    @PutMapping("update/{id}")
+    public ApiBaseResponse<?> updateDocument(@RequestBody @Valid DocumentRequest request, @PathVariable(name = "id") Long id) {
+        return documentService.updateDocument(id, request);
+    }
+
     @PutMapping("update-status")
-    public ApiBaseResponse<?> updateStatusDocument(@RequestBody DocumentUpdateRequest request){
+    public ApiBaseResponse<?> updateStatusDocument(@RequestBody @Valid DocumentUpdateRequest request) {
         return documentService.updateStatusDocuments(request);
     }
 
     @GetMapping("detail/{id}")
-    public ApiBaseResponse<Document> getDetailDocument(@PathVariable(name = "id") Long id){
+    public ApiBaseResponse<Document> getDetailDocument(@PathVariable(name = "id") Long id) {
         return documentService.getDetailDocument(id);
     }
 
     @PostMapping("names")
-    public ApiBaseResponse<PageBaseDto<DocumentName>> getNameForm(@RequestBody DocumentNameFilterRequest filter){
+    public ApiBaseResponse<PageBaseDto<DocumentName>> getNameForm(@RequestBody DocumentNameFilterRequest filter) {
         return documentService.NameDocumentResponse(filter);
     }
 
-    @GetMapping("summary")
-    public ApiBaseResponse<SummaryDocument> summaryDocument(){
-        return documentService.summaryDocument();
+    @GetMapping("summary-count")
+    public ApiBaseResponse<DocumentSummaryResponse> summaryCountDocument() {
+        return documentService.summaryCountDocument();
     }
 }

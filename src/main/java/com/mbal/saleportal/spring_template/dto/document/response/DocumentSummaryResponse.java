@@ -1,6 +1,7 @@
 package com.mbal.saleportal.spring_template.dto.document.response;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -9,9 +10,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SummaryDocument {
+@Builder
+public class DocumentSummaryResponse {
 
-    private List<FormSummary> formSummaries;
-    private List<NotificationSummary> notificationSummaries;
+    private List<CountDocument> summaryCountForm;
+    private Long notificationCount ;
 
 }

@@ -11,12 +11,12 @@ import java.util.List;
 @Repository
 public class DocumentFileRepositoryImpl extends RepositoryImpl<DocumentFile, Long> implements DocumentFilePrimaryRepository, DocumentFileSecondaryRepository {
 
-    private DocumentFilePrimaryRepository documentFilePrimaryRepository;
-    private DocumentFileSecondaryRepository documentFileSecondaryRepository;
+    private final DocumentFilePrimaryRepository documentFilePrimaryRepository;
+    private final DocumentFileSecondaryRepository documentFileSecondaryRepository;
 
-    public DocumentFileRepositoryImpl(DocumentFilePrimaryRepository documentFilePrimaryRepository,
-                                      DocumentFileSecondaryRepository documentFileSecondaryRepository) {
-        super(documentFilePrimaryRepository, documentFileSecondaryRepository);
+    public DocumentFileRepositoryImpl(DocumentFileSecondaryRepository documentFileSecondaryRepository,
+                                      DocumentFilePrimaryRepository documentFilePrimaryRepository) {
+        super(documentFileSecondaryRepository, documentFilePrimaryRepository);
         this.documentFilePrimaryRepository = documentFilePrimaryRepository;
         this.documentFileSecondaryRepository = documentFileSecondaryRepository;
     }
@@ -24,5 +24,10 @@ public class DocumentFileRepositoryImpl extends RepositoryImpl<DocumentFile, Lon
     @Override
     public List<DocumentFile> findByDocumentId(Long documentId) {
         return this.documentFileSecondaryRepository.findByDocumentId(documentId);
+    }
+
+    @Override
+    public void deleteByDocumentId(Long documentId) {
+        this.documentFilePrimaryRepository.deleteByDocumentId(documentId);
     }
 }

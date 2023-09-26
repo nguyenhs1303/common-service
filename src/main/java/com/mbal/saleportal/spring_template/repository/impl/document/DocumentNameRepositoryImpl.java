@@ -12,8 +12,8 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class DocumentNameRepositoryImpl extends RepositoryImpl<DocumentName, Long> implements DocumentNameSecondaryRepository, DocumentNamePrimaryRepository {
 
-    private DocumentNameSecondaryRepository documentNameSecondaryRepository;
-    private DocumentNamePrimaryRepository documentNamePrimaryRepository;
+    private final DocumentNameSecondaryRepository documentNameSecondaryRepository;
+    private final DocumentNamePrimaryRepository documentNamePrimaryRepository;
 
     public DocumentNameRepositoryImpl(DocumentNameSecondaryRepository documentNameSecondaryRepository, DocumentNamePrimaryRepository documentNamePrimaryRepository) {
         super(documentNameSecondaryRepository, documentNamePrimaryRepository);

@@ -7,9 +7,10 @@ import com.mbal.saleportal.spring_template.dto.document.request.DocumentRequest;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentUpdateRequest;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentFilterRequest;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentNameFilterRequest;
+import com.mbal.saleportal.spring_template.dto.document.response.CountDocument;
 import com.mbal.saleportal.spring_template.dto.document.response.DocumentResponse;
 import com.mbal.saleportal.spring_template.dto.document.response.DocumentFileResponse;
-import com.mbal.saleportal.spring_template.dto.document.response.SummaryDocument;
+import com.mbal.saleportal.spring_template.dto.document.response.DocumentSummaryResponse;
 import com.mbal.saleportal.spring_template.entity.Document;
 import com.mbal.saleportal.spring_template.entity.DocumentFile;
 import com.mbal.saleportal.spring_template.entity.DocumentName;
@@ -32,9 +33,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,13 +55,22 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public ApiBaseResponse<PageBaseDto<Document>> getDocuments(DocumentFilterRequest filter) {
         Pageable pageable = PageRequest.of(filter.getPageRequest().getPage(), filter.getPageRequest().getSize());
-        Page<Document> page = documentRepository
-                .filter(filter.getKeyword(),
-                        DocumentType.convertFromString(filter.getDocumentType()),
-                        DocumentCategory.convertFromString(filter.getDocumentCategory()),
-                        filter.getUploadStatus(),
-                        DocumentNotificationStatus.convertFromString(filter.getNotificationStatus()),
-                        pageable);
+        Page<Document> page = documentRepository.filter(filter.getKeyword(),
+                DocumentType.convertFromString(filter.getDocumentType()),
+                DocumentCategory.convertFromString(filter.getDocumentCategory()),
+                SalePortalChannel.convertFromString(filter.getChannel()),
+                filter.getUploadStatus(),
+                DocumentNotificationStatus.convertFromString(filter.getNotificationStatus()),
+                DateUtils.stringToStartLocalDateTime(filter.getStartCreatedAt(), DateUtils.PATTERN_DDmmyyyy),
+                DateUtils.stringToEndLocalDateTime(filter.getEndCreatedAt(), DateUtils.PATTERN_DDmmyyyy),
+                DateUtils.stringToStartLocalDateTime(filter.getStartUpdateAt(), DateUtils.PATTERN_DDmmyyyy),
+                DateUtils.stringToEndLocalDateTime(filter.getEndUpdateAt(), DateUtils.PATTERN_DDmmyyyy),
+                DateUtils.stringToStartLocalDateTime(filter.getStartEffectiveDate(), DateUtils.PATTERN_DDmmyyyy),
+                DateUtils.stringToEndLocalDateTime(filter.getEndEffectiveDate(), DateUtils.PATTERN_DDmmyyyy),
+                DateUtils.stringToStartLocalDateTime(filter.getStartExpirationDate(), DateUtils.PATTERN_DDmmyyyy),
+                DateUtils.stringToEndLocalDateTime(filter.getEndExpirationDate(), DateUtils.PATTERN_DDmmyyyy),
+                pageable);
+
         PageBaseDto<Document> pageBaseDto = PageBaseDto.<Document>builder()
                 .page(filter.getPageRequest().getPage())
                 .size(filter.getPageRequest().getSize())
@@ -99,7 +113,7 @@ public class DocumentServiceImpl implements DocumentService {
                 .build();
         Document document = documentRepository.findById(id).orElse(null);
         DocumentResponse documentResponse = DocumentMapper.INSTANCE.documentEntityToResponse(document);
-        if (document == null){
+        if (document == null) {
             return response;
         }
         List<DocumentFile> fileList = documentFileRepository.findByDocumentId(document.getId());
@@ -110,19 +124,42 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
+    @Transactional(transactionManager = "transactionManagerWriteData")
     public ApiBaseResponse<?> updateStatusDocuments(DocumentUpdateRequest request) {
-        return null;
+        List<Long> uniqueDocumentIds = request.getIds();
+        if (request.getStatus()){
+            List<Document> documents = documentRepository.findByIds(request.getIds());
+            Map<Long, Document> documentMap = new HashMap<>();
+            for (Document document : documents) {
+                if (!documentMap.containsKey(document.getDocumentNameId()) ||
+                        document.getUpdatedAt().after(documentMap.get(document.getDocumentNameId()).getUpdatedAt())) {
+                    documentMap.put(document.getDocumentNameId(), document);
+                }
+            }
+            uniqueDocumentIds = documentMap.values().stream().map(Document::getId).collect(Collectors.toList());
+
+        }
+
+        documentRepository.updateStatusByInIds(uniqueDocumentIds, request.getStatus());
+        return ApiBaseResponse.builder()
+                .message(HttpStatus.OK.name())
+                .statusCode(String.valueOf(HttpStatus.OK.value()))
+                .build();
     }
 
     @Override
+    @Transactional(transactionManager = "transactionManagerWriteData")
     public ApiBaseResponse<?> createDocument(DocumentRequest request) {
         validationDocumentRequest(request);
         Document document = DocumentMapper.INSTANCE.documentRequestToEntity(request);
         document.setNotificationStatus(processNotificationStatus(request));
+        document.setUploadStatus(true);
+        Document savedDocument = documentRepository.save(document);
+
         List<DocumentFile> documentFile = request.getFiles().stream()
-                .map(d -> {
-                    DocumentFile file = DocumentMapper.INSTANCE.documentFileRequestToEntity(d);
-                    file.setDocumentId(document.getDocumentNameId());
+                .map(f -> {
+                    DocumentFile file = DocumentMapper.INSTANCE.documentFileRequestToEntity(f);
+                    file.setDocumentId(savedDocument.getId());
                     return file;
                 }).collect(Collectors.toList());
         if (DocumentType.FORM.equals(DocumentType.valueOf(request.getType()))) {
@@ -130,9 +167,43 @@ public class DocumentServiceImpl implements DocumentService {
                 documentRepository.updateUploadStatusByDocumentNameId(request.getDocumentNameId(), false);
             }
         }
+        documentFileRepository.saveAll(documentFile);
+        return ApiBaseResponse.builder()
+                .message(HttpStatus.OK.name())
+                .statusCode(String.valueOf(HttpStatus.OK.value()))
+                .build();
+    }
 
-        document.setUploadStatus(true);
-        documentRepository.save(document);
+    @Override
+    @Transactional(transactionManager = "transactionManagerWriteData")
+    public ApiBaseResponse<?> updateDocument(Long id, DocumentRequest request) {
+        Document documentExist = documentRepository.findById(id).orElseThrow(() -> new BadRequestException(DocumentResponseMessage.DOCUMENT_NOT_EXIST));
+        validationDocumentRequest(request);
+        // Update document
+        documentExist.setDocumentNameId(request.getDocumentNameId());
+        documentExist.setName(request.getName());
+        documentExist.setEffectiveDate(DateUtils.stringToLocalDate(request.getEffectiveDate(), DateUtils.PATTERN_DDmmyyyy));
+        documentExist.setExpirationDate(DateUtils.stringToLocalDate(request.getExpirationDate(), DateUtils.PATTERN_DDmmyyyy));
+        documentExist.setType(DocumentType.valueOf(request.getType()));
+        documentExist.setUserType(DocumentUserType.valueOf(request.getUserType()));
+        documentExist.setChannel(SalePortalChannel.valueOf(request.getChannel()));
+        documentExist.setDocumentCategory(DocumentCategory.valueOf(request.getDocumentCategory()));
+        documentExist.setNotificationStatus(processNotificationStatus(request));
+        // get file document by request
+        List<DocumentFile> documentFile = request.getFiles().stream()
+                .map(d -> {
+                    DocumentFile file = DocumentMapper.INSTANCE.documentFileRequestToEntity(d);
+                    file.setDocumentId(documentExist.getId());
+                    return file;
+                }).collect(Collectors.toList());
+        if (DocumentType.FORM.equals(DocumentType.valueOf(request.getType()))) {
+            if (request.getDocumentNameId() != null) {
+                documentRepository.updateUploadStatusByDocumentNameId(request.getDocumentNameId(), false);
+            }
+        }
+        documentFileRepository.deleteByDocumentId(documentExist.getId());
+        documentExist.setUploadStatus(true);
+        documentRepository.save(documentExist);
         documentFileRepository.saveAll(documentFile);
         return ApiBaseResponse.builder()
                 .message(HttpStatus.OK.name())
@@ -212,7 +283,19 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public ApiBaseResponse<SummaryDocument> summaryDocument() {
-        return null;
+    public ApiBaseResponse<DocumentSummaryResponse> summaryCountDocument() {
+        List<CountDocument> countForm = documentRepository.countDocumentByTypeAndUploadStatusAndGroupByCategory(DocumentType.FORM, true);
+        List<CountDocument> countNotification = documentRepository.countDocumentByTypeAndUploadStatusAndGroupByCategory(DocumentType.NOTIFICATION, true);
+        DocumentSummaryResponse res = DocumentSummaryResponse.builder()
+                .summaryCountForm(countForm)
+                .notificationCount(countNotification.stream().mapToLong(CountDocument::getCount).sum())
+                .build();
+        return ApiBaseResponse.<DocumentSummaryResponse>builder()
+                .message(HttpStatus.OK.name())
+                .statusCode(String.valueOf(HttpStatus.OK.value()))
+                .data(res)
+                .build();
     }
+
+
 }

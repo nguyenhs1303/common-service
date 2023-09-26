@@ -5,11 +5,9 @@ spring:
     default: local
     active: local
   jpa:
-    hibernate-dialect: org.hibernate.dialect.PostgreSQLDialect
-    open-in-view: false
-    show-sql: false
+    open-in-view: true
+    show-sql: true
     hibernate:
-      dialect:
       ddl-auto: none
   datasource-read-data:
     jdbc-url: jdbc:postgresql://localhost:5432/common
@@ -35,42 +33,46 @@ spring:
       change-log: classpath:/liquibase/changelog-master.xml
 server:
   port: 8080
-
   error:
     include-message: always
 
+logging:
+  level:
+    org:
+      hibernate:
+        sql: DEBUG
 
-springdoc:
-  paths-to-exclude: /swagger-resources/**
-  api-docs:
-    enabled: true
-  swagger-ui:
-    enabled: true
-    path: /swagger
-    use-root-path: false
-    disable-swagger-default-url: true
-    display-request-duration: true
-    syntax-highlight:
-      theme: monokai
-management:
-  server:
-    port: 8081
-  endpoints:
-    web:
-      exposure:
-        include: health,prometheus
-  endpoint:
-    health:
-      probes:
-        enabled: true
-  health:
-    livenessstate:
-      enabled: on
-    readinessstate:
-      enabled: on
-sentry:
-  traces-sample-rate: 1.0
-  environment: local
+#springdoc:
+#  paths-to-exclude: /swagger-resources/**
+#  api-docs:
+#    enabled: true
+#  swagger-ui:
+#    enabled: true
+#    path: /swagger
+#    use-root-path: false
+#    disable-swagger-default-url: true
+#    display-request-duration: true
+#    syntax-highlight:
+#      theme: monokai
+#management:
+#  server:
+#    port: 8081
+#  endpoints:
+#    web:
+#      exposure:
+#        include: health,prometheus
+#  endpoint:
+#    health:
+#      probes:
+#        enabled: true
+#  health:
+#    livenessstate:
+#      enabled: on
+#    readinessstate:
+#      enabled: on
+#sentry:
+#  traces-sample-rate: 1.0
+#  environment: local
 ---
 # ============================================================
 # DEV

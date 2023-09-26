@@ -9,7 +9,7 @@ public class HikariConfigWriteData extends HikariConfig {
 
     protected final String PERSISTENCE_UNIT_NAME = "primary";
 
-    protected final Properties JPA_READ_PROPERTIES = new Properties() {{
+    protected final Properties JPA_WRITE_PROPERTIES = new Properties() {{
         put("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect");
         put("show-sql", "true");
     }};

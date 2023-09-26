@@ -8,6 +8,7 @@ import lombok.Getter;
 public enum DocumentResponseMessage {
 
     DOCUMENT_NAME_NOT_EXIST("DOCUMENT_NAME_NOT_EXIST", "Tên biểu mẫu (form) không tồn tại"),
+    DOCUMENT_NOT_EXIST("DOCUMENT_NOT_EXIST","Tài liệu biểu mẫu hoặc thông báo không tồn tại" ),
     DOCUMENT_CATEGORY_NOT_BELONG_TO_FORM("DOCUMENT_CATEGORY_NOT_BELONG_TO_FORM", "Danh mục (DocumentCategory ) không thuộc `Biểu mẫu` (FORM)"),
     DOCUMENT_NAME_NOT_BELONG_TO_DOCUMENT_CATEGORY("DOCUMENT_NAME_NOT_BELONG_TO_DOCUMENT_CATEGORY", "`Tên` (NameDocument) không thuộc `Danh mục` (CategoryDocument)"),
     DOCUMENT_CATEGORY_NOT_BELONG_TO_NOTIFICATION("DOCUMENT_CATEGORY_NOT_BELONG_TO_NOTIFICATION", "Danh mục (DocumentCategory ) không thuộc `Thông báo` (NOTIFICATION)"),

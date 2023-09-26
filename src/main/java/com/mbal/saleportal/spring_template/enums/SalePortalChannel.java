@@ -12,8 +12,16 @@ public enum SalePortalChannel {
     public static void checkChannel(String channel) {
         try {
             valueOf(channel);
-        }catch (Exception e){
+        } catch (Exception e) {
             throw new BadRequestException(DocumentResponseMessage.SALE_PORTAL_CHANNEL_INVALID);
+        }
+    }
+
+    public static SalePortalChannel convertFromString(String channel) {
+        try {
+            return valueOf(channel);
+        } catch (Exception e) {
+            return null;
         }
     }
 }
