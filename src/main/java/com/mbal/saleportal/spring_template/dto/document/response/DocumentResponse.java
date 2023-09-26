@@ -1,5 +1,10 @@
 package com.mbal.saleportal.spring_template.dto.document.response;
 
+import com.mbal.saleportal.spring_template.enums.SalePortalChannel;
+import com.mbal.saleportal.spring_template.enums.document.DocumentCategory;
+import com.mbal.saleportal.spring_template.enums.document.DocumentNotificationStatus;
+import com.mbal.saleportal.spring_template.enums.document.DocumentType;
+import com.mbal.saleportal.spring_template.enums.document.DocumentUserType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,15 +23,17 @@ import java.util.List;
 public class DocumentResponse {
 
     private Long id;
-    private Long nameFormId;
+    private Long documentNameId;
     private String name;
     private LocalDate effectiveDate;
     private LocalDate expirationDate;
-    private Boolean status;
-    private String notificationStatus;
-    private String type;
+    private Boolean uploadStatus;
+    private DocumentNotificationStatus notificationStatus;
+    private DocumentType type;
     private LocalDateTime createdAt;
     private LocalDateTime updateAt;
-    private List<FileDocumentResponse> files;
-
+    private DocumentCategory documentCategory;
+    private SalePortalChannel channel;
+    private DocumentUserType userType;
+    private List<DocumentFileResponse> files;
 }

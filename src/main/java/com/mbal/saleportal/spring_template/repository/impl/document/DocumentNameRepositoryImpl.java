@@ -1,9 +1,12 @@
 package com.mbal.saleportal.spring_template.repository.impl.document;
 
+import com.mbal.saleportal.spring_template.dto.document.request.DocumentNameFilterRequest;
 import com.mbal.saleportal.spring_template.entity.DocumentName;
 import com.mbal.saleportal.spring_template.repository.impl.RepositoryImpl;
 import com.mbal.saleportal.spring_template.repository.primary.document.DocumentNamePrimaryRepository;
 import com.mbal.saleportal.spring_template.repository.secondary.document.DocumentNameSecondaryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -18,4 +21,8 @@ public class DocumentNameRepositoryImpl extends RepositoryImpl<DocumentName, Lon
         this.documentNamePrimaryRepository = documentNamePrimaryRepository;
     }
 
+    @Override
+    public Page<DocumentName> filter(DocumentNameFilterRequest filter, Pageable pageable) {
+        return this.documentNameSecondaryRepository.filter(filter, pageable);
+    }
 }

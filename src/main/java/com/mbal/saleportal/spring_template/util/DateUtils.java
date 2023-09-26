@@ -9,10 +9,15 @@ import java.time.format.DateTimeFormatter;
 public class DateUtils {
 
     public static final String PATTERN_yyyyDDmm = "yyyyMMdd";
+    public static final String PATTERN_DDmmyyyy = "dd/MM/yyyy";
 
-    public static LocalDate convertStringToLocalDate(String inputDate) {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return LocalDate.parse(inputDate, dateTimeFormatter);
+    public static LocalDate stringToLocalDate(String inputDate, String pattern) {
+        try {
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(pattern);
+            return LocalDate.parse(inputDate, dateTimeFormatter);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     public static String convertDateToString(Date date, String pattern) {

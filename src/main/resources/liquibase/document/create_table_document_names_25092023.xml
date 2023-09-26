@@ -17,7 +17,9 @@
             </column>
             <column name="name" type="VARCHAR(255)"/>
             <column name="order" type="INT"/>
-            <column name="document_category_id" type="BIGINT"/>
+            <column name="document_category" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
             <column name="created_at" type="TIMESTAMP"/>
             <column name="updated_at" type="TIMESTAMP"/>
 

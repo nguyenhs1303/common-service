@@ -1,5 +1,6 @@
 package com.mbal.saleportal.spring_template.enums.document;
 
+import com.mbal.saleportal.spring_template.exception.BadRequestException;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -11,12 +12,20 @@ public enum DocumentType {
     NOTIFICATION, // thong bao
     ALL; // Dành cho tat ca
 
-    public static boolean checkDocumentType(String s){
+    public static void checkDocumentType(String s) {
         try {
-            DocumentType documentType = DocumentType.valueOf(s);
-            return documentType == FORM || documentType == NOTIFICATION ||  documentType == ALL;
+            DocumentType.valueOf(s);
         } catch (IllegalArgumentException e) {
-            return false;
+            throw new BadRequestException(DocumentResponseMessage.DOCUMENT_TYPE_INVALID);
+        }
+    }
+
+    public static DocumentType convertFromString(String s) {
+        try {
+
+            return DocumentType.valueOf(s);
+        } catch (IllegalArgumentException e) {
+            return null;
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.mbal.saleportal.spring_template.entity;
 
 
+import com.mbal.saleportal.spring_template.enums.document.DocumentCategory;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,8 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.Table;
 
 @Getter
@@ -26,8 +29,9 @@ public class DocumentName extends BaseEntity{
     @Column(name = "name")
     private String name;
 
-    @Column(name = "document_category_id")
-    private Long documentCategoryId;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "document_category")
+    private DocumentCategory documentCategory;
 
     public DocumentName(String name) {
         this.name = name;

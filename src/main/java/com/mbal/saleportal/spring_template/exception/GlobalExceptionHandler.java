@@ -1,6 +1,7 @@
 package com.mbal.saleportal.spring_template.exception;
 
 import com.mbal.saleportal.spring_template.dto.ApiBaseResponseError;
+import com.mbal.saleportal.spring_template.util.StringUtils;
 import liquibase.pro.license.keymgr.e;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.exception.ExceptionUtils;
@@ -36,9 +37,13 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiBaseResponseError handleBadRequestException(BadRequestException ex) {
         log.error(getExceptionExplain(ex));
+        String errorCode = String.valueOf(HttpStatus.BAD_REQUEST.value());
+        if (!StringUtils.isNullOrEmptyWithTrim(ex.getErrorCode())){
+            errorCode = ex.getErrorCode();
+        }
         return ApiBaseResponseError.builder()
                 .messages(ex.getMessage())
-                .errorCode(String.valueOf(HttpStatus.BAD_REQUEST.value()))
+                .errorCode(errorCode)
                 .build();
     }
 

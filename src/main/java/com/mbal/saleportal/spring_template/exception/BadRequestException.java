@@ -8,10 +8,6 @@ public class BadRequestException extends BaseCustomException{
         super(message);
     }
 
-    public BadRequestException(String message, String errorCode){
-        super(message, errorCode);
-    }
-
     public BadRequestException(String message){
         super(message);
     }

@@ -2,19 +2,16 @@ package com.mbal.saleportal.spring_template.controller;
 
 import com.mbal.saleportal.spring_template.dto.ApiBaseResponse;
 import com.mbal.saleportal.spring_template.dto.PageBaseDto;
-import com.mbal.saleportal.spring_template.dto.document.request.CategoryFilter;
+import com.mbal.saleportal.spring_template.dto.document.request.DocumentCategoryFilter;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentRequest;
 import com.mbal.saleportal.spring_template.dto.document.request.DocumentUpdateRequest;
-import com.mbal.saleportal.spring_template.dto.document.request.FilterDocumentRequest;
-import com.mbal.saleportal.spring_template.dto.document.request.FilterNameDocumentRequest;
-import com.mbal.saleportal.spring_template.dto.document.response.DocumentResponse;
-import com.mbal.saleportal.spring_template.dto.document.response.NameDocumentResponse;
-import com.mbal.saleportal.spring_template.dto.document.response.SubTypeDocumentResponse;
+import com.mbal.saleportal.spring_template.dto.document.request.DocumentFilterRequest;
+import com.mbal.saleportal.spring_template.dto.document.request.DocumentNameFilterRequest;
 import com.mbal.saleportal.spring_template.dto.document.response.SummaryDocument;
-import com.mbal.saleportal.spring_template.entity.DocumentCategory;
+import com.mbal.saleportal.spring_template.entity.Document;
+import com.mbal.saleportal.spring_template.entity.DocumentName;
 import com.mbal.saleportal.spring_template.service.document.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,7 +30,7 @@ public class DocumentController {
     private DocumentService documentService;
 
     @PostMapping("filter")
-    public ApiBaseResponse<DocumentResponse> getDocuments(@RequestBody FilterDocumentRequest request){
+    public ApiBaseResponse<PageBaseDto<Document>> getDocuments(@RequestBody DocumentFilterRequest request){
         return documentService.getDocuments(request);
     }
 
@@ -48,18 +45,13 @@ public class DocumentController {
     }
 
     @GetMapping("detail/{id}")
-    public ApiBaseResponse<?> getDetailDocument(@PathVariable(name = "id") Long id){
+    public ApiBaseResponse<Document> getDetailDocument(@PathVariable(name = "id") Long id){
         return documentService.getDetailDocument(id);
     }
 
     @PostMapping("names")
-    public ApiBaseResponse<PageBaseDto<NameDocumentResponse>> getNameForm(@RequestBody FilterNameDocumentRequest filter){
+    public ApiBaseResponse<PageBaseDto<DocumentName>> getNameForm(@RequestBody DocumentNameFilterRequest filter){
         return documentService.NameDocumentResponse(filter);
-    }
-
-    @GetMapping("categories")
-    public ApiBaseResponse<PageBaseDto<DocumentCategory>> getCategories(@RequestBody @Valid CategoryFilter filter){
-        return documentService.getCategories(filter);
     }
 
     @GetMapping("summary")

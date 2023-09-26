@@ -21,9 +21,7 @@
             </column>
             <column name="effective_date" type="DATE"/>
             <column name="expiration_date" type="DATE"/>
-            <column name="upload_status" type="BOOLEAN" defaultValue="true">
-                <constraints nullable="false"/>
-            </column>
+            <column name="upload_status" type="BOOLEAN" defaultValue="true"/>
             <column name="type" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
@@ -33,7 +31,8 @@
             <column name="users_type" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
-            <column name="notification_status" type="VARCHAR(50)">
+            <column name="notification_status" type="VARCHAR(50)"/>
+            <column name="document_category" type="VARCHAR(50)">
                 <constraints nullable="false"/>
             </column>
             <column name="created_at" type="TIMESTAMP"/>

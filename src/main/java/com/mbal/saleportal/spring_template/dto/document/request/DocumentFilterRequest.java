@@ -6,12 +6,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class FilterDocumentRequest {
+public class DocumentFilterRequest {
 
     private String keyword;
     // trạng thái
-    private String status;
+    private Boolean uploadStatus;
     //ngày đăng tải
     private String startCreatedAt;
     private String endCreatedAt;
@@ -19,6 +18,13 @@ public class FilterDocumentRequest {
     private String startUpdateAt;
     private String endUpdateAt;
 
-    private Integer size = 10;
-    private Integer page = 0;
+
+    private String documentType;
+    private String documentCategory;
+    private String notificationStatus;
+    private PageRequest pageRequest;
+
+    public DocumentFilterRequest() {
+        this.pageRequest = new PageRequest(10, 0);
+    }
 }

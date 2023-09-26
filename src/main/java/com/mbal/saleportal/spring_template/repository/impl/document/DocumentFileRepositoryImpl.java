@@ -6,6 +6,8 @@ import com.mbal.saleportal.spring_template.repository.primary.document.DocumentF
 import com.mbal.saleportal.spring_template.repository.secondary.document.DocumentFileSecondaryRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public class DocumentFileRepositoryImpl extends RepositoryImpl<DocumentFile, Long> implements DocumentFilePrimaryRepository, DocumentFileSecondaryRepository {
 
@@ -19,4 +21,8 @@ public class DocumentFileRepositoryImpl extends RepositoryImpl<DocumentFile, Lon
         this.documentFileSecondaryRepository = documentFileSecondaryRepository;
     }
 
+    @Override
+    public List<DocumentFile> findByDocumentId(Long documentId) {
+        return this.documentFileSecondaryRepository.findByDocumentId(documentId);
+    }
 }

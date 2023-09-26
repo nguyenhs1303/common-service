@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileDocumentResponse {
+public class DocumentFileResponse {
 
     private Long id;
     private Long documentId;

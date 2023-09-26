@@ -1,9 +1,10 @@
 package com.mbal.saleportal.spring_template.entity;
 
 import com.mbal.saleportal.spring_template.enums.SalePortalChannel;
+import com.mbal.saleportal.spring_template.enums.document.DocumentCategory;
 import com.mbal.saleportal.spring_template.enums.document.DocumentType;
 import com.mbal.saleportal.spring_template.enums.document.DocumentUserType;
-import com.mbal.saleportal.spring_template.enums.document.NotificationDocumentStatus;
+import com.mbal.saleportal.spring_template.enums.document.DocumentNotificationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,6 +47,10 @@ public class Document extends BaseEntity{
     private DocumentType type;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "document_category")
+    private DocumentCategory documentCategory;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "channel")
     private SalePortalChannel channel;
 
@@ -55,6 +60,6 @@ public class Document extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(name = "notification_status")
-    private NotificationDocumentStatus notificationStatus;
+    private DocumentNotificationStatus notificationStatus;
 
 }
